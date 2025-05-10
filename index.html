@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+
+  <title>City Clock</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      font-family: 'IBM Plex Mono', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .clock-container {
+      background: #ffffff;
+      padding: 20px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .city {
+      font-size: 1.2rem;
+      color: #444;
+      margin-bottom: 8px;
+    }
+
+    .time {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="clock-container">
+    <div class="city" id="city-name">City</div>
+    <div class="time" id="clock">--:--:--</div>
+  </div>
+
+  <script>
+    // Get URL parameters
+    function getParam(name, fallback) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name) || fallback;
+    }
+
+    const city = getParam('city', 'New York');
+    const timezone = getParam('tz', 'America/New_York');
+
+    document.getElementById('city-name').textContent = city;
+
+    function updateTime() {
+      const now = new Date();
+      const options = {
+        timeZone: timezone,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: true
+      };
+      const timeString = new Intl.DateTimeFormat('en-US', options).format(now);
+      document.getElementById('clock').textContent = timeString;
+    }
+
+    setInterval(updateTime, 1000);
+    updateTime();
+  </script>
+</body>
+</html>
